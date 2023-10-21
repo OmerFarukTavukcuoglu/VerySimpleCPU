@@ -1,0 +1,71 @@
+/* 
+	MACHINE CODE FOR FLOOR DIVISION THAT WHICH IMPLEMENTED THE ASSEMBLY CODE  
+0000 0000 0001 ; CP R1, dividend
+0001 0001 0000 0010 ; CP R2, divisor
+0011 0011 0000 0000 ; CPi R3, 0
+0011 0100 0000 0000 ; CPi R4, 0
+0110 0110 0000 0001 ; SRL R6, R1, 15
+1010 0110 0000 1001 ; BZJi CheckDividendPositive
+1000 0001 1111 1111 ; NOT R1, R1
+0000 0001 0000 0001 ; ADDi R1, R1, 1
+0110 0110 0000 0010 ; SRL R6, R2, 15
+1010 0110 0000 0111 ; BZJi CheckDivisorPositive
+1000 0010 1111 1111 ; NOT R2, R2
+0000 0010 0000 0001 ; ADDi R2, R2, 1
+0001 0101 0010 0000 ; SUB R5, R1, R2
+0100 0101 0000 0000 ; BLT R5, 0, EndLoop
+0000 0011 0000 0001 ; ADDi R3, R3, 1
+0001 0001 0101 0000 ; ADD R1, R5, 0
+0000 0100 0000 0001 ; ADDi R4, R4, 1
+0100 0000 1111 1011 ; BZJ Loop
+0001 0001 0011 0000 ; CP R1, R3
+0110 0110 0000 0001 ; SRL R6, R3, 15
+1010 0110 0000 0100 ; BZJi End
+1000 0011 1111 1111 ; NOT R3, R3
+0000 0011 0000 0001 ; ADDi R3, R3, 1
+0000 0000 0000 0000 ;*/
+			
+		
+      // Machine code for floor division
+      3'b110: begin
+        addr_toRAM = PC;
+        stN = 3'h111;
+      end
+      3'b111: begin
+        IWN = data_fromRAM;
+        if ((data_fromRAM[31:28] == 4'b0010) && (data_fromRAM[27:14] == 14'd1)) begin
+          addr_toRAM = 32'd0;
+          stN = 3'h1000;
+        end
+        if (data_fromRAM[31:28] == 4'b0001) begin
+          addr_toRAM = 32'd0;
+          stN = 3'h1001;
+        end
+        if ((data_fromRAM[31:30] == 2'b00) || (data_fromRAM[31:29] == 3'b110))  begin // ADD, ADDi, NAND, NANDi, BZJi, BZJ instruction
+          addr_toRAM = data_fromRAM[27:14]; // read opA
+          stN = 3'b010; 
+        end
+      end
+      // Modified states for floor division
+      3'b1000: begin  
+        A = A - data_fromRAM;
+        PCN = PC + 14'd1;
+        addr_toRAM = 32'd0;
+        stN = 3'h1010;
+      end
+      3'b1001: begin  
+        A = A + data_fromRAM;
+        PCN = PC + 14'd1;
+        addr_toRAM = 32'd0;
+        stN = 3'h1010;
+      end
+      3'b1010: begin 
+        addr_toRAM = 32'd0;
+        data_toRAM = A;
+        wrEn = 1'b1;
+        PCN = PC + 14'd1;
+        if (intr == 1'b1 && isr != 1'b1)  
+          stN = 3'h4;
+        else
+          stN = 3'h0;
+      end

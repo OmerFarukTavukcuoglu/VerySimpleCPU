@@ -1,0 +1,8 @@
+xst -intstyle ise -ifn "C:/.Xilinx/VerySimpleCPU_HW/VerySimpleCPU.xst" -ofn "C:/.Xilinx/VerySimpleCPU_HW/VerySimpleCPU.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc7a100t-csg324-3 VerySimpleCPU.ngc VerySimpleCPU.ngd  
+map -intstyle ise -p xc7a100t-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -mt off -ir off -pr off -lc off -power off -o VerySimpleCPU_map.ncd VerySimpleCPU.ngd VerySimpleCPU.pcf 
+par -w -intstyle ise -ol high -mt off VerySimpleCPU_map.ncd VerySimpleCPU.ncd VerySimpleCPU.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml VerySimpleCPU.twx VerySimpleCPU.ncd -o VerySimpleCPU.twr VerySimpleCPU.pcf 
+map -intstyle ise -p xc7a100t-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -mt off -ir off -pr off -lc off -power off -o VerySimpleCPU_map.ncd VerySimpleCPU.ngd VerySimpleCPU.pcf 
+xst -intstyle ise -ifn "C:/.Xilinx/VerySimpleCPU_HW/VerySimpleCPU.xst" -ofn "C:/.Xilinx/VerySimpleCPU_HW/VerySimpleCPU.syr" 
+xst -intstyle ise -ifn "C:/.Xilinx/VerySimpleCPU_HW/VerySimpleCPU.xst" -ofn "C:/.Xilinx/VerySimpleCPU_HW/VerySimpleCPU.syr" 
