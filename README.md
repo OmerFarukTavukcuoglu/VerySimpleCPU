@@ -3,9 +3,8 @@ VerySimpleCPU
 ![image](https://github.com/OmerFarukTavukcuoglu/VerySimpleCPU/assets/148585869/f564431c-2f95-43f2-ad3e-3670dbe0b8f1)
 
 
-Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
---> Parameter TMPDIR set to xst/projnav.tmp
-
+ 
+ 
 
 Total REAL time to Xst completion: 0.00 secs
 Total CPU time to Xst completion: 0.09 secs
